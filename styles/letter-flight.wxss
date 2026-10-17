@@ -1,0 +1,82 @@
+/* One shot, 3 seconds. Animate only transform / opacity; no blur, bitmap or frame loop. */
+.letter-flight{position:fixed;inset:0;z-index:80;overflow:hidden;background:#f8faff;animation:letter-flight-presence 3s ease both;}
+.letter-flight-stage{position:absolute;left:50%;top:50%;width:280px;height:190px;margin-left:-140px;margin-top:-137px;pointer-events:none;}
+.letter-envelope{position:absolute;left:70px;top:66px;width:140px;height:94px;animation:letter-envelope-fold 3s cubic-bezier(.4,0,.2,1) both,letter-envelope-visible 3s steps(1,end) both;}
+.letter-envelope-back{position:absolute;inset:0;z-index:0;background:#c4d4e9;border:2.5px solid #657fa1;border-radius:7px;box-shadow:0 9px 18px rgba(48,75,112,.1);}
+.letter-envelope-back::after{content:"";position:absolute;left:5px;right:5px;top:1px;height:3px;border-radius:2px;background:#9eb4d2;}
+.letter-paper{position:absolute;left:17px;top:-40px;z-index:2;width:106px;height:78px;padding:16px;box-sizing:border-box;border:2.5px solid #6c86a8;border-radius:5px;background:#fff;box-shadow:0 3px 0 #c5d4e8;animation:letter-paper-in 3s cubic-bezier(.25,.1,.25,1) both;}
+.letter-paper-mark{width:14px;height:4px;border-radius:4px;background:#7298ca;margin-bottom:16px;}
+.letter-paper-line{height:3px;border-radius:3px;background:#b7c9e1;margin-bottom:8px;}
+.letter-paper-line-short{width:70%;}
+.letter-envelope-front{position:absolute;inset:0;z-index:3;border-radius:6px;overflow:hidden;}
+/* The mouth / back rim belongs BEHIND the paper. Only the sides and base are in front. */
+.letter-envelope-front::after{content:"";position:absolute;inset:0;border:2.5px solid #657fa1;border-top:0;border-radius:0 0 7px 7px;pointer-events:none;}
+.letter-envelope-left,.letter-envelope-right,.letter-envelope-bottom,.letter-envelope-lid,.letter-plane-upper,.letter-plane-lower,.letter-plane-fold{position:absolute;width:0;height:0;}
+.letter-envelope-left{left:0;top:0;border-left:74px solid #dce7f6;border-top:47px solid transparent;border-bottom:47px solid transparent;}
+.letter-envelope-right{right:0;top:0;border-right:74px solid #c6d7ed;border-top:47px solid transparent;border-bottom:47px solid transparent;}
+.letter-envelope-bottom{left:0;bottom:0;border-bottom:59px solid #eef4ff;border-left:70px solid transparent;border-right:70px solid transparent;}
+.letter-envelope-bottom::before,.letter-envelope-bottom::after{content:"";position:absolute;left:0;top:0;width:91.5px;height:2px;background:#839bb9;transform-origin:left center;}
+.letter-envelope-bottom::before{transform:rotate(140deg);}
+.letter-envelope-bottom::after{transform:rotate(40deg);}
+.letter-envelope-lid{left:0;top:-46px;z-index:4;border-bottom:47px solid #cbdcf2;border-left:70px solid transparent;border-right:70px solid transparent;transform-origin:50% 100%;animation:letter-lid-visible 3s steps(1,end) both;}
+.letter-envelope-lid::before,.letter-envelope-lid::after{content:"";position:absolute;left:0;top:0;width:84.3px;height:2.5px;border-radius:2px;background:#657fa1;transform-origin:left center;}
+.letter-envelope-lid::before{transform:rotate(146.1deg);}
+.letter-envelope-lid::after{transform:rotate(33.9deg);}
+.letter-envelope-lid-open{z-index:1;animation:letter-lid-open 3s steps(1,end) both;}
+/* Four linked paper bands curl in sequence; the tip slips behind the front pocket. */
+.letter-envelope-lid-soft{top:1px;width:140px;height:48px;border:0;perspective:360px;animation:letter-lid-visible 3s steps(1,end) both;}
+.letter-envelope-lid-soft::before,.letter-envelope-lid-soft::after{content:none;}
+.letter-flap-hinge,.letter-flap-joint{position:absolute;left:0;top:0;width:140px;height:12px;transform-origin:50% 0;transform-style:preserve-3d;}
+.letter-flap-hinge{animation:letter-flap-hinge 3s cubic-bezier(.32,0,.26,1) both;}
+.letter-flap-joint{top:12px;}
+.letter-flap-joint-one{animation:letter-flap-bend-one 3s cubic-bezier(.32,0,.26,1) both;}
+.letter-flap-joint-two{animation:letter-flap-bend-two 3s cubic-bezier(.32,0,.26,1) both;}
+.letter-flap-joint-three{animation:letter-flap-bend-three 3s cubic-bezier(.32,0,.26,1) both;}
+.letter-flap-band{position:absolute;left:0;top:0;width:140px;height:13px;overflow:hidden;}
+.letter-flap-face{position:absolute;left:0;top:0;width:0;height:0;border-top:47px solid #cbdcf2;border-left:70px solid transparent;border-right:70px solid transparent;}
+.letter-flap-face-one{top:-12px;}
+.letter-flap-face-two{top:-24px;}
+.letter-flap-face-three{top:-36px;}
+.letter-flap-face::before,.letter-flap-face::after{content:"";position:absolute;left:0;top:-1px;width:84.3px;height:2.5px;border-radius:2px;background:#657fa1;transform-origin:left center;}
+.letter-flap-face::before{transform:rotate(213.9deg);}
+.letter-flap-face::after{transform:rotate(326.1deg);}
+.letter-envelope-tuck{position:absolute;inset:0;z-index:5;overflow:hidden;border-radius:0 0 6px 6px;}
+.letter-plane-path{position:absolute;left:70px;top:68px;width:140px;height:90px;animation:letter-plane-flight 3s cubic-bezier(.42,0,.28,1) both;}
+.letter-plane{position:absolute;inset:0;animation:letter-plane-visible 3s steps(1,end) both;}
+.letter-plane-upper{left:0;top:0;border-left:140px solid #567397;border-top:45px solid transparent;transform-origin:100% 100%;animation:letter-wing-upper 3s cubic-bezier(.3,0,.2,1) both;}
+.letter-plane-lower{left:0;top:45px;border-left:140px solid #567397;border-bottom:45px solid transparent;transform-origin:100% 0;animation:letter-wing-lower 3s cubic-bezier(.3,0,.2,1) both;}
+.letter-plane-upper::after{content:"";position:absolute;left:-137.5px;top:-41.4px;width:0;height:0;border-left:124.5px solid #dae7fa;border-top:40px solid transparent;}
+.letter-plane-lower::after{content:"";position:absolute;left:-137.5px;top:1.4px;width:0;height:0;border-left:124.5px solid #8caedc;border-bottom:40px solid transparent;}
+.letter-plane-fold{left:25px;top:45px;border-left:115px solid #f7faff;border-bottom:19px solid transparent;transform-origin:100% 0;animation:letter-wing-lower 3s cubic-bezier(.3,0,.2,1) both;}
+.letter-plane-fold::after{content:"";position:absolute;left:-115px;top:17.4px;width:116px;height:2px;background:#567397;transform-origin:left center;transform:rotate(-9.38deg);}
+.letter-flight-copy{position:absolute;left:20px;right:20px;top:calc(50% + 66px);text-align:center;pointer-events:none;animation:letter-copy-in 3s ease both;}
+.letter-flight-title{display:block;font-size:20px;line-height:1.6;font-weight:600;letter-spacing:.5px;color:#415c81;}
+.letter-flight-caption{display:block;font-size:12px;line-height:1.8;color:#8193ad;margin-top:9px;}
+.is-sending-letter .echo-wash{animation-play-state:paused;}
+@keyframes letter-flight-presence{0%{opacity:0;}7%,91%{opacity:1;}100%{opacity:0;}}
+/* Paper stays opaque, including during entry: rear seams must never bleed through it. */
+@keyframes letter-paper-in{0%,5%{transform:translate(3px,-52px) rotate(-6deg);}12%{transform:translate(1px,-25px) rotate(-3deg);}30%{transform:translate(0,46px) rotate(.6deg);}34%,100%{transform:translate(0,51px) rotate(0);}}
+@keyframes letter-lid-open{0%{opacity:1;}34%,100%{opacity:0;}}
+@keyframes letter-lid-visible{0%{opacity:0;}34%,100%{opacity:1;}}
+@keyframes letter-flap-hinge{0%,34%{transform:rotateX(180deg);}38%{transform:rotateX(140deg);}42%{transform:rotateX(68deg);}46%{transform:rotateX(12deg);}48%,100%{transform:rotateX(0);}}
+@keyframes letter-flap-bend-one{0%,34%{transform:rotateX(0);}38%{transform:rotateX(30deg);}42%{transform:rotateX(44deg);}46%{transform:rotateX(18deg);}49%,100%{transform:rotateX(0);}}
+@keyframes letter-flap-bend-two{0%,34%{transform:rotateX(0);}39%{transform:rotateX(24deg);}43%{transform:rotateX(48deg);}47%{transform:rotateX(22deg);}50%,100%{transform:rotateX(0);}}
+@keyframes letter-flap-bend-three{0%,34%{transform:rotateX(0);}40%{transform:rotateX(20deg);}44%{transform:rotateX(52deg);}48%{transform:rotateX(22deg);}50%,100%{transform:rotateX(0);}}
+/* Both silhouettes meet at the same centre / -19deg folded edge; never crossfade them. */
+@keyframes letter-envelope-fold{0%{transform:translate(0,5px) rotate(1.2deg) scale(1);}16%{transform:translate(0,-1px) rotate(-.6deg) scale(1);}34%,50%{transform:translate(0,0) rotate(0) scale(1);}58%,100%{transform:translate(0,-3px) rotate(-19deg) scale(.92,.15);}}
+@keyframes letter-envelope-visible{0%{opacity:1;}58%,100%{opacity:0;}}
+@keyframes letter-plane-visible{0%{opacity:0;}58%,100%{opacity:1;}}
+@keyframes letter-plane-flight{0%,58%{transform:translate(0,-3px) rotate(-19deg) scale(.92,.5);opacity:1;}68%{transform:translate(0,-7px) rotate(-19deg) scale(1);opacity:1;}70%{transform:translate(-4px,-3px) rotate(-16deg) scale(1);opacity:1;}74%{transform:translate(7px,-8px) rotate(-21deg) scale(.98);opacity:1;animation-timing-function:linear;}84%{transform:translate(90px,-61px) rotate(-28deg) scale(.9);opacity:1;animation-timing-function:linear;}94%{transform:translate(260px,-195px) rotate(-29deg) scale(.6);opacity:.65;animation-timing-function:linear;}100%{transform:translate(360px,-280px) rotate(-31deg) scale(.48);opacity:0;}}
+@keyframes letter-wing-upper{0%,58%{transform:scaleY(.31);}68%,100%{transform:scaleY(1);}}
+@keyframes letter-wing-lower{0%,58%{transform:scaleY(.31);}68%,100%{transform:scaleY(1);}}
+@keyframes letter-copy-in{0%,13%{opacity:0;transform:translateY(5px);}25%,100%{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .letter-flight{animation:letter-flight-presence 1.3s ease both;}
+  .letter-envelope{display:none;}
+  .letter-plane-path{animation:none;opacity:1;transform:scale(.85);}
+  .letter-plane{animation:none;opacity:1;transform:rotate(-19deg);}
+  .letter-plane-upper,.letter-plane-lower,.letter-plane-fold{animation:none;}
+  .letter-flight-copy{animation:none;}
+}
+@media (max-height:420px){.letter-flight-stage{margin-top:-116px;transform:scale(.8);}.letter-flight-copy{top:calc(50% + 47px);}.letter-flight-title{font-size:18px;}}
+@media (min-width:600px) and (min-height:421px){.letter-flight-stage{transform:scale(1.2);}.letter-flight-copy{top:calc(50% + 80px);}.letter-flight-title{font-size:22px;}.letter-flight-caption{font-size:13px;}}

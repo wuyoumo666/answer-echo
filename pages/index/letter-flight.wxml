@@ -1,0 +1,27 @@
+<template name="letter-flight">
+  <view id="reminder-flight" class="letter-flight" catchtap="finishReminderFlight" catchtouchmove="stopPropagation" bindanimationend="onReminderFlightEnd" aria-role="button" aria-label="提醒已设置。约定日早上九点在微信提醒。轻触继续。">
+    <view class="letter-flight-stage" aria-hidden="true">
+      <view class="letter-envelope">
+        <view class="letter-envelope-back"></view>
+        <view class="letter-envelope-lid letter-envelope-lid-open"></view>
+        <view class="letter-paper"><view class="letter-paper-mark"></view><view class="letter-paper-line"></view><view class="letter-paper-line letter-paper-line-short"></view></view>
+        <view class="letter-envelope-front"><view class="letter-envelope-left"></view><view class="letter-envelope-right"></view><view class="letter-envelope-bottom"></view></view>
+        <view class="letter-envelope-lid letter-envelope-lid-soft">
+          <view class="letter-flap-hinge">
+            <view class="letter-flap-band"><view class="letter-flap-face"></view></view>
+            <view class="letter-flap-joint letter-flap-joint-one">
+              <view class="letter-flap-band"><view class="letter-flap-face letter-flap-face-one"></view></view>
+              <view class="letter-flap-joint letter-flap-joint-two">
+                <view class="letter-flap-band"><view class="letter-flap-face letter-flap-face-two"></view></view>
+                <view class="letter-flap-joint letter-flap-joint-three"><view class="letter-flap-band"><view class="letter-flap-face letter-flap-face-three"></view></view></view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="letter-envelope-tuck"><view class="letter-envelope-bottom"></view></view>
+      </view>
+      <view class="letter-plane-path"><view class="letter-plane"><view class="letter-plane-upper"></view><view class="letter-plane-lower"></view><view class="letter-plane-fold"></view></view></view>
+    </view>
+    <view class="letter-flight-copy"><text class="letter-flight-title">把这封信，交给未来。</text><text class="letter-flight-caption">提醒已设置 · 约定日早上 9 点见</text></view>
+  </view>
+</template>

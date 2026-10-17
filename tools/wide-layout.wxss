@@ -1,0 +1,91 @@
+@media(min-width:600px){
+  page{font-size:14px;}
+  .input-placeholder,.app-shell.layout-wide .input-placeholder{font-size:16px!important;line-height:1.85;}
+  .app-shell.layout-wide .navigation{max-width:1120px;width:100%;margin:0 auto;padding:0 28px;gap:12px;}
+  .app-shell.layout-wide .brand{font-size:18px;}
+  .app-shell.layout-wide .brand-symbol{width:24px;height:24px;}
+  .app-shell.layout-wide .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1fr);column-gap:34px;row-gap:24px;align-content:center;align-items:center;width:100%;max-width:1120px;padding:32px 28px calc(24px + env(safe-area-inset-bottom));}
+  .app-shell.layout-wide .hero,.app-shell.layout-wide .home.is-typing .hero{min-height:280px;padding:24px 0;}
+  .app-shell.layout-wide .hero-title,.app-shell.layout-wide .home.is-typing .hero-title{font-size:32px;line-height:1.5;letter-spacing:-.6px;}
+  .app-shell.layout-wide .hero-description,.app-shell.layout-wide .home.is-typing .hero-description{font-size:15px;line-height:1.9;margin-top:18px;}
+  .app-shell.layout-wide .hero-eyebrow{font-size:13px;margin-bottom:14px;}
+  .app-shell.layout-wide .brand-emblem,.app-shell.layout-wide .home.is-typing .brand-emblem{display:flex;width:76px;height:76px;margin-bottom:26px;border-radius:21px;}
+  .app-shell.layout-wide .brand-emblem image{width:70px;height:70px;border-radius:18px;}
+  .app-shell.layout-wide .composer-frame{width:100%;max-width:460px;justify-self:end;}
+  .app-shell.layout-wide .composer-frame .composer{padding:24px;}
+  .app-shell.layout-wide .question-field .question-input{font-size:17px;line-height:1.85;min-height:112px;max-height:240px;margin-bottom:24px;}
+  .app-shell.layout-wide .question-input .input-placeholder{font-size:16px;}
+  .app-shell.layout-wide .composer-footer{gap:12px;flex-wrap:wrap;}
+  .app-shell.layout-wide button.listen-button{min-width:132px;height:48px;font-size:15px;}
+  .app-shell.layout-wide .home-footer{grid-column:1 / -1;height:auto;min-height:32px;font-size:12px;}
+  .app-shell.layout-wide .page-content{width:100%;max-width:800px;padding:32px 28px calc(32px + env(safe-area-inset-bottom));}
+  .app-shell.layout-wide .answer-text{font-size:30px!important;line-height:1.65;}
+  .app-shell.layout-wide .detail-answer{font-size:28px!important;line-height:1.65;}
+  .app-shell.layout-wide .answer-reflection,.app-shell.layout-wide .detail-reflection{font-size:16px;line-height:1.95;}
+  .app-shell.layout-wide .answer-card{padding:28px 28px 0;}
+  .app-shell.layout-wide .answer-question{font-size:15px;}
+  .app-shell.layout-wide button.again-button{max-width:420px;margin:0 auto!important;}
+  .app-shell.layout-wide .journal-page{max-width:1120px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 28px;}
+  .app-shell.layout-wide .journal-heading{margin:0 0 12px;}
+  .app-shell.layout-wide .journal-title{font-size:34px;line-height:1.5;}
+  .app-shell.layout-wide .journal-description{font-size:15px;}
+  .app-shell.layout-wide button.future-inbox{align-self:center;margin:0!important;}
+  .app-shell.layout-wide .journal-controls{margin:0;padding:0;align-self:center;gap:12px;flex-wrap:wrap;}
+  .app-shell.layout-wide .search-box{margin:0;align-self:center;}
+  .app-shell.layout-wide .entry-list{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;}
+  .app-shell.layout-wide button.entry{min-width:0;height:100%;padding:24px;}
+  .app-shell.layout-wide .entry-answer{font-size:20px;line-height:1.75;}
+  .app-shell.layout-wide .entry-question{font-size:14px;}
+  .app-shell.layout-wide .empty-state,.app-shell.layout-wide button.about-link{grid-column:1 / -1;}
+  .app-shell.layout-wide .sheet-backdrop,.app-shell.layout-wide .seal-backdrop,.app-shell.layout-wide .image-share-backdrop{align-items:center;justify-content:center;padding:24px;}
+  .app-shell.layout-wide .sheet,.app-shell.layout-wide .seal-panel{max-width:680px;border-radius:28px;max-height:100%;box-shadow:0 18px 70px rgba(31,51,80,.12);}
+  .app-shell.layout-wide .sheet.intuition-sheet{max-width:520px;}
+  .app-shell.layout-wide .sheet-scroll{height:720px;}
+  .app-shell.layout-wide .intuition-sheet .sheet-scroll{height:auto;}
+  .app-shell.layout-wide .journey-content,.app-shell.layout-wide .detail-content,.app-shell.layout-wide .about-content{padding-left:32px;padding-right:32px;}
+  .app-shell.layout-wide .journey-title{font-size:28px;line-height:1.55;}
+  .app-shell.layout-wide .journey-description{font-size:15px;}
+  .app-shell.layout-wide .gentle-caption{font-size:13px;}
+  .app-shell.layout-wide .section-eyebrow{font-size:12px;}
+  .app-shell.layout-wide .note-input{font-size:16px;height:180px;}
+  .app-shell.layout-wide .seal-message{font-size:16px;height:150px;}
+  .app-shell.layout-wide .is-keyboard .note-input{height:110px;}
+  .app-shell.layout-wide.is-keyboard .note-input{height:110px;}
+  .app-shell.layout-wide.is-keyboard .seal-message{height:100px;}
+  .app-shell.layout-wide .seal-scroll{height:720px;}
+  .app-shell.layout-wide .image-share-panel{max-width:520px;border-radius:28px;padding:24px;max-height:100%;}
+  .app-shell.layout-wide .image-share-scroll{height:calc(100vh - 240px);max-height:560px;}
+  .app-shell.layout-wide .image-share-preview,.app-shell.layout-wide .image-share-state{height:100%;max-height:100%;}
+  .app-shell.layout-wide .image-share-title{font-size:20px;}
+  .app-shell.layout-wide .image-share-description{font-size:12px;}
+  .app-shell.layout-wide button.image-share-send,.app-shell.layout-wide button.image-share-save{height:48px;font-size:15px;}
+  .app-shell.layout-wide .brand-transition-mark{width:112px;height:112px;}
+  .app-shell.layout-wide .brand-transition-title{font-size:24px;}
+  .app-shell.layout-wide .brand-transition-caption{font-size:14px;}
+  .app-shell.layout-wide .notice{max-width:520px;font-size:14px;}
+}
+@media(min-width:960px){
+  .app-shell.layout-wide .home{column-gap:72px;padding-left:48px;padding-right:48px;}
+  .app-shell.layout-wide .hero-title{font-size:40px;}
+  .app-shell.layout-wide .hero-description{font-size:17px;}
+  .app-shell.layout-wide .hero{min-height:360px;}
+  .app-shell.layout-wide .answer-page{max-width:1120px;display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);gap:20px 40px;align-content:start;}
+  .app-shell.layout-wide .edition-row{grid-column:1 / -1;}
+  .app-shell.layout-wide .answer-question{grid-column:1;grid-row:2;margin:0;align-self:start;}
+  .app-shell.layout-wide .answer-card{grid-column:2;grid-row:2 / span 6;align-self:start;}
+  .app-shell.layout-wide .saved-hint,.app-shell.layout-wide .save-warning,.app-shell.layout-wide .self-listening,.app-shell.layout-wide button.future-link,.app-shell.layout-wide button.again-button{grid-column:1;margin-top:0;}
+  .app-shell.layout-wide .self-listening{border-top:0;padding-top:0;}
+  .app-shell.layout-wide button.again-button{max-width:none;}
+}
+@media(min-width:600px) and (max-height:600px){
+  .app-shell.layout-wide .home{align-content:start;padding-top:16px;padding-bottom:16px;row-gap:12px;}
+  .app-shell.layout-wide .hero,.app-shell.layout-wide .home.is-typing .hero{min-height:0;padding:12px 0;}
+  .app-shell.layout-wide .hero-title,.app-shell.layout-wide .home.is-typing .hero-title{font-size:28px;}
+  .app-shell.layout-wide .brand-emblem{width:54px;height:54px;margin-bottom:15px;}
+  .app-shell.layout-wide .brand-emblem image{width:50px;height:50px;}
+  .app-shell.layout-wide .question-field .question-input{min-height:76px;}
+  .app-shell.layout-wide .sheet-backdrop,.app-shell.layout-wide .seal-backdrop,.app-shell.layout-wide .image-share-backdrop{padding:12px;}
+  .app-shell.layout-wide .image-share-heading{margin-bottom:10px;}
+  .app-shell.layout-wide .image-share-buttons{margin-top:12px;}
+  .app-shell.layout-wide .image-share-tip{margin-top:8px;}
+}

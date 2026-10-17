@@ -1,0 +1,13 @@
+# 微信开发者工具本地私有配置（含本机编译设置）
+project.private.config.json
+
+# 依赖
+node_modules/
+miniprogram_npm/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,75 @@
+{
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "uglifyFileName": false,
+    "enhance": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useCompilerPlugins": false,
+    "minifyWXSS": true,
+    "minifyWXML": true
+  },
+  "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [
+      {"type":"folder","value":"cloudfunctions"},
+      {
+        "value": "README.md",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "value": ".eslintrc.js"
+      },
+      {
+        "type": "folder",
+        "value": "components"
+      },
+      {
+        "type": "file",
+        "value": "assets/app-icon.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/app-icon.svg"
+      },
+      {
+        "type": "file",
+        "value": "assets/ripple.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/echo.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/echo-muted.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/book.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/book-muted.png"
+      },
+      {
+        "type": "folder",
+        "value": "tools"
+      }
+    ],
+    "include": []
+  },
+  "appid": "wxbcaf388f5db09f79",
+  "editorSetting": {},
+  "projectname": "答案回响",
+  "description": "答案回响 2.02 · 直觉、后来与未来回响"
+}

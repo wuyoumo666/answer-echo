@@ -1,0 +1,109 @@
+<import src="./letter-flight.wxml"/>
+<view class="app-shell layout-{{layoutMode}} {{!pageActive ? 'is-inactive' : ''}} {{keyboardHeight ? 'is-keyboard' : ''}} {{reminderFlight ? 'is-sending-letter' : ''}}">
+  <view class="echo-background" aria-hidden="true">
+    <view class="echo-wash echo-wash-cool"></view>
+    <view class="echo-wash echo-wash-warm"></view>
+    <view class="echo-wash echo-wash-mint"></view>
+    <view class="echo-wash echo-wash-amber"></view>
+  </view>
+  <view class="status-space" style="height:{{topInset}}px"></view>
+  <view class="navigation" style="height:{{navHeight}}px">
+    <button wx:if="{{tab === 'ask' && phase === 'answer'}}" class="nav-history nav-home" bindtap="returnHome" disabled="{{brandTransition || sceneLeaving}}" hover-class="icon-pressed" aria-label="返回主界面"><image src="/assets/back.png"/><text>首页</text></button>
+    <button wx:else class="nav-history" bindtap="toggleArchive" disabled="{{phase === 'breathing' || brandTransition}}" hover-class="icon-pressed" aria-label="{{tab === 'echo' ? '返回提问' : '打开我的回响'}}"><image src="{{tab === 'echo' ? '/assets/back.png' : '/assets/history.png'}}"/></button>
+    <view class="brand"><image class="brand-symbol" src="/assets/brand-mark.png"/><text>{{tab === 'echo' ? '我的回响' : '答案回响'}}</text></view>
+  </view>
+  <scroll-view wx:if="{{tab === 'ask' && phase !== 'answer'}}" class="page-scroll scene {{sceneLeaving ? 'scene-leaving' : ''}} scene-{{sceneDirection}} motion-{{sceneMotion}}" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="home {{phase === 'breathing' ? 'is-listening' : ''}} {{questionFocused ? 'is-typing' : ''}}" style="min-height:calc(100vh - {{topInset + navHeight}}px)">
+      <view class="hero">
+        <view class="brand-emblem"><image src="/assets/brand-mark.png"/></view>
+        <view class="hero-copy"><text class="hero-eyebrow">给此刻的你</text><text class="hero-title color-text">心里有个疑问？</text><text class="hero-title">听听另一种可能。</text><text class="hero-description">{{phase === 'breathing' ? breathingText : '写下来，或在心里轻轻默念。'}}</text></view>
+      </view>
+      <view class="composer-frame {{questionFocused ? 'is-focused' : ''}}"><view class="composer {{questionFocused ? 'is-focused' : ''}}">
+        <view class="composer-label"><view class="composer-heading"><image src="/assets/pen.png"/><text>此刻的疑问</text></view><text class="composer-optional">选填</text></view>
+        <view class="question-field"><text class="question-quote" aria-hidden="true">“</text><textarea class="question-input" auto-height show-confirm-bar="{{false}}" value="{{question}}" bindinput="onQuestion" bindfocus="onQuestionFocus" bindblur="onQuestionBlur" bindkeyboardheightchange="onKeyboardHeight" disabled="{{phase === 'breathing'}}" maxlength="100" placeholder="此刻，你想问些什么？" placeholder-class="input-placeholder" confirm-type="done" adjust-position cursor-spacing="24"/></view>
+        <view class="composer-footer"><view class="composer-hint"><image src="/assets/lock.png"/><text>仅保存在本机</text></view><button class="listen-button" bindtap="beginListening" disabled="{{phase === 'breathing'}}" hover-class="primary-pressed"><text>{{phase === 'breathing' ? '正在回响' : '听听回响'}}</text><view wx:if="{{phase !== 'breathing'}}" class="listen-arrow"><image src="/assets/arrow-light.png"/></view></button></view>
+      </view></view>
+      <view class="home-footer"><button wx:if="{{phase === 'breathing'}}" class="cancel-listening" bindtap="cancelListening">暂时停下</button><text wx:else>答案是一种灵感，决定留给你。</text></view>
+    </view>
+  </scroll-view>
+  <scroll-view wx:if="{{tab === 'ask' && phase === 'answer'}}" class="page-scroll scene {{sceneLeaving ? 'scene-leaving' : ''}} scene-{{sceneDirection}} motion-{{sceneMotion}}" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="answer-page page-content">
+      <view class="edition-row"><view class="edition"><view class="color-dot"></view><text>此刻的回响</text></view><text class="date-label">{{result.date}}</text></view>
+      <view class="answer-question"><text class="question-eyebrow">刚刚，你问</text><text>{{result.question || '一个放在心里的问题'}}</text></view>
+      <view class="answer-card"><view class="answer-card-heading"><image class="answer-mark" src="/assets/brand-mark.png"/><text>给此刻的你</text><view class="card-color-line"></view></view><text class="answer-text" style="font-size:{{resultFontSize}}rpx">{{resultDisplayText || result.text}}</text><text class="answer-reflection">{{result.reflection}}</text><view class="card-footer"><text>{{result.label}}</text><view class="answer-actions"><button class="card-action" bindtap="toggleFavorite" data-id="{{result.id}}" hover-class="icon-pressed" aria-label="{{result.favorite ? '取消收藏' : '收藏答案'}}"><image src="{{result.favorite ? '/assets/bookmark-filled.png' : '/assets/bookmark.png'}}"/></button><button class="card-action" bindtap="openShareCard" hover-class="icon-pressed" aria-label="生成答案图片"><image src="/assets/share-icon.png"/></button></view></view></view>
+      <view wx:if="{{saveFailed}}" class="save-warning"><text>这次回响尚未保存。</text><button bindtap="retrySave">重试保存</button></view>
+      <view wx:else class="saved-hint"><view class="saved-dot"></view><text>已留在「我的回响」，以后也能读到。</text></view>
+      <view wx:if="{{result.intuitionLabel}}" class="self-listening"><text class="section-eyebrow">先听见了自己</text><text class="intuition-memory">揭晓前，你说「{{result.intuitionLabel}}」</text><text class="self-question">这句回响，是你希望听到的吗？</text><view class="choice-row"><button wx:for="{{responseChoices}}" wx:key="value" class="choice-pill {{result.response === item.value ? 'selected' : ''}}" bindtap="chooseResponse" data-value="{{item.value}}" aria-label="{{item.label}}，{{result.response === item.value ? '已选择' : '未选择'}}">{{item.label}}</button></view><text wx:if="{{result.response}}" class="gentle-caption">{{result.response === 'other' ? '留意你期待的那句话，它也许正是你的倾向。' : '记住此刻的感受，选择仍由你自己做。'}}</text></view>
+      <button class="future-link" bindtap="openSeal" hover-class="text-pressed"><text>把这句回响，留给未来的自己</text><text>↗</text></button>
+      <button class="primary-button again-button" bindtap="anotherQuestion" disabled="{{brandTransition || sceneLeaving}}" hover-class="primary-pressed">再问一次<image src="/assets/arrow-light.png"/></button>
+    </view>
+  </scroll-view>
+  <scroll-view wx:if="{{tab === 'echo'}}" class="page-scroll scene {{sceneLeaving ? 'scene-leaving' : ''}} scene-{{sceneDirection}} motion-{{sceneMotion}}" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="journal-page page-content">
+      <view class="journal-heading"><text class="journal-title">留住一句，</text><text class="journal-title color-text">以后再听。</text><text class="journal-description">你的疑问、答案，还有后来想说的话。</text></view>
+      <button class="future-inbox" bindtap="openCapsules" hover-class="entry-pressed"><view class="future-inbox-mark">✉</view><view class="future-inbox-copy"><text>写给未来的回响</text><text class="future-inbox-caption">{{capsuleReadyCount ? capsuleReadyCount + ' 封到了打开的日子' : capsuleCount ? capsuleCount + ' 封回响，等一个约定的日子' : '把今天的一句话，留到以后再读'}}</text></view><text class="future-inbox-arrow">↗</text></button>
+      <view class="journal-controls"><view class="filter-row"><view class="filter-slider {{filter === 'favorites' ? 'at-favorites' : ''}}"></view><button class="filter {{filter === 'all' ? 'selected' : ''}}" bindtap="onFilter" data-filter="all">全部 <text>{{entries.length}}</text></button><button class="filter {{filter === 'favorites' ? 'selected' : ''}}" bindtap="onFilter" data-filter="favorites">收藏 <text>{{favoriteCount}}</text></button></view><view class="local-only"><image src="/assets/lock.png"/><text>仅在本机</text></view></view>
+      <view wx:if="{{entries.length}}" class="search-box"><image src="/assets/search.png"/><input value="{{search}}" bindinput="onSearch" placeholder="搜索回响" placeholder-class="input-placeholder" maxlength="50" confirm-type="search"/><button wx:if="{{search}}" class="search-clear" bindtap="clearSearch" aria-label="清空搜索">×</button></view>
+      <view wx:if="{{visibleEntries.length}}" class="entry-list {{filterChanging ? 'list-changing' : ''}}"><button wx:for="{{visibleEntries}}" wx:key="id" class="entry {{index < 6 ? 'entry-animated' : ''}}" style="animation-delay:{{index < 6 ? index * 30 : 0}}ms" bindtap="openEntry" data-id="{{item.id}}" hover-class="entry-pressed"><view class="entry-meta"><text>{{item.date}}</text><image wx:if="{{item.favorite}}" src="/assets/bookmark-filled.png" class="entry-bookmark"/><text wx:else class="entry-arrow">↗</text></view><text class="entry-question">{{item.question || '一个放在心里的问题'}}</text><text class="entry-answer">{{item.text}}</text><view wx:if="{{item.outcomeLabel}}" class="entry-note outcome-badge"><view class="tiny-dot"></view><text>后来 · {{item.outcomeLabel}}</text></view><view wx:elif="{{item.note}}" class="entry-note"><view class="tiny-dot"></view><text>已写回信</text></view><view wx:elif="{{item.canReflect}}" class="entry-note"><view class="tiny-dot"></view><text>后来，你找到自己的答案了吗？</text></view></button></view>
+      <view wx:else class="empty-state"><image src="/assets/brand-mark.png"/><text class="empty-title">{{search ? '还没找到这句回响' : filter === 'favorites' ? '给喜欢的话，留个位置' : '第一声回响，从一个疑问开始'}}</text><text class="empty-description">{{search ? '换个词试试。' : filter === 'favorites' ? '看到想留下的答案，点一下收藏。' : '你的答案会自动保存在这里。'}}</text><button wx:if="{{!search && filter === 'all'}}" class="empty-action" bindtap="goAsk">去问一问 <text>↗</text></button></view>
+      <button class="about-link" bindtap="openAbout" hover-class="text-pressed">关于答案回响 <text>↗</text></button>
+    </view>
+  </scroll-view>
+  <view wx:if="{{brandTransition}}" class="brand-transition {{brandTransitionClosing ? 'brand-transition-closing' : ''}}" style="top:{{topInset + navHeight}}px" catchtouchmove="stopPropagation">
+    <view class="brand-transition-content">
+      <view class="brand-transition-mark"><image src="/assets/brand-mark.png" class="brand-transition-symbol" mode="aspectFit" aria-label="答案回响"/></view>
+      <text class="brand-transition-title">听见一点回响</text>
+      <text class="brand-transition-caption">让这个疑问，轻轻落下。</text>
+    </view>
+    <button class="brand-transition-cancel" bindtap="cancelListening" disabled="{{brandTransitionClosing}}" hover-class="text-pressed">暂时停下</button>
+  </view>
+  <view wx:if="{{sheet}}" class="sheet-backdrop {{sheetClosing ? 'is-closing' : ''}}" style="bottom:{{sealOpen ? 0 : keyboardHeight}}px" bindtap="closeSheet" catchtouchmove="stopPropagation"><view class="sheet {{sheet === 'intuition' ? 'intuition-sheet' : ''}}" catchtap="stopPropagation"><view class="sheet-handle"></view><button class="sheet-close" bindtap="closeSheet" hover-class="icon-pressed" aria-label="关闭">×</button><scroll-view scroll-y class="sheet-scroll" scroll-into-view="{{sheetAnchor}}" style="max-height:{{keyboardHeight && !sealOpen ? 'calc(100vh - ' + (keyboardHeight + 100) + 'px)' : '73vh'}}" enhanced show-scrollbar="{{false}}">
+    <view wx:if="{{sheet === 'intuition'}}" class="journey-content intuition-content"><text class="section-eyebrow">先听见自己</text><text class="journey-title">揭晓前，<text class="color-text">你更倾向哪边？</text></text><text class="journey-description">不用想得很清楚，留下一点直觉就好。</text><view class="intuition-choices"><button wx:for="{{intuitionChoices}}" wx:key="value" class="intuition-choice {{intuitionDraft === item.value ? 'selected' : ''}}" bindtap="chooseIntuition" data-value="{{item.value}}" aria-label="{{item.label}}，{{intuitionDraft === item.value ? '已选择' : '未选择'}}"><text>{{item.label}}</text><text>{{intuitionDraft === item.value ? '✓' : '○'}}</text></button></view><button class="primary-button" bindtap="listenWithIntuition">{{intuitionDraft ? '带着这份直觉，听听回响' : '听听回响'}}</button><button class="journey-skip" bindtap="listenWithIntuition" data-skip="{{true}}">跳过，直接揭晓</button><text class="gentle-caption">直觉只留在本机，不会改变随机抽取的答案。</text></view>
+    <view wx:if="{{sheet === 'about'}}" class="about-content"><image src="/assets/brand-mark.png" class="about-logo"/><text class="about-title">给疑问一个去处。<text class="color-text">{{'\n'}}给自己一点时间。</text></text><text class="about-copy">有时候，我们只是想在犹豫的片刻，听见一句轻轻的回应。</text><text class="about-copy">这里的 {{answerCount}} 句原创答案随机出现，不解读或预测问题。读到它时的感受，也许会帮你更了解自己。</text><view class="about-rule"></view><view class="setting-row"><view><text class="setting-title">触感反馈</text><text class="setting-description">答案出现时，轻轻震动一下</text></view><switch checked="{{vibration}}" bindchange="toggleVibration" color="#0B57D0" style="transform:scale(.85);transform-origin:right center;"/></view><view class="privacy-copy"><image src="/assets/lock.png"/><text>问题、直觉、答案和回信只保存在当前设备，普通历史最多保留最近 200 次，未来回响独立保留最多 50 封。清理数据或更换设备后，记录不会自动恢复。</text></view><text class="about-signature">愿你听见回响，也听见自己。</text><text class="version">答案回响 · 2.02</text></view>
+    <view wx:if="{{sheet === 'detail'}}" class="detail-content">
+      <view class="detail-meta"><text>{{detail.date}}</text><text>{{detail.label}}</text></view>
+      <text class="detail-question">{{detail.question || '一个放在心里的问题'}}</text>
+      <text wx:if="{{detail.intuitionLabel}}" class="detail-intuition">当时的直觉 · {{detail.intuitionLabel}}</text>
+      <text class="detail-answer" style="font-size:{{detailFontSize}}rpx">{{detailDisplayText || detail.text}}</text><text class="detail-reflection">{{detail.reflection}}</text>
+      <text wx:if="{{detail.responseLabel}}" class="gentle-caption">读到时，你说「{{detail.responseLabel}}」</text>
+      <view class="detail-actions"><button bindtap="toggleFavorite" data-id="{{detail.id}}" hover-class="icon-pressed"><image src="{{detail.favorite ? '/assets/bookmark-filled.png' : '/assets/bookmark.png'}}"/><text>{{detail.favorite ? '已收藏' : '收藏'}}</text></button><button class="detail-share" bindtap="openShareCard" hover-class="icon-pressed"><image src="/assets/share-icon.png"/><text>分享</text></button><button bindtap="openSeal" hover-class="icon-pressed"><text>留给未来 ↗</text></button></view>
+      <view class="later-section"><text class="section-eyebrow">回响有了后来</text><text class="self-question">现在，这件事走到了哪里？</text><view class="outcome-choices"><button wx:for="{{outcomeChoices}}" wx:key="value" class="choice-pill {{outcomeDraft === item.value ? 'selected' : ''}}" bindtap="chooseOutcome" data-value="{{item.value}}" aria-label="{{item.label}}，{{outcomeDraft === item.value ? '已选择' : '未选择'}}">{{item.label}}</button></view><text class="gentle-caption">还没有结果也没关系，随时可以回来改。</text></view>
+      <view class="note-section"><view class="note-title"><image src="/assets/pen.png"/><text>写给那时的自己</text></view><text class="note-subtitle">{{detail.canReflect ? '后来，你找到自己的答案了吗？' : '记下此刻的感受，也可以以后再回来。'}}</text><view id="note-editor"><textarea value="{{noteDraft}}" bindinput="onNote" bindkeyboardheightchange="onKeyboardHeight" fixed="{{true}}" class="note-input" placeholder="现在回头看，我想说……" placeholder-class="input-placeholder" maxlength="500" adjust-position="{{false}}" cursor-spacing="24" show-confirm-bar="{{false}}"/><text class="note-counter">{{noteDraft.length}} / 500</text></view></view>
+      <button class="primary-button" bindtap="saveNote" hover-class="primary-pressed">保存这段后来</button><button class="delete-entry" bindtap="deleteEntry">放下这次回响</button>
+    </view>
+    <view wx:if="{{sheet === 'capsules'}}" class="journey-content">
+      <text class="section-eyebrow">与未来的约定</text><text class="journey-title">有些话，<text class="color-text">留到那天再读。</text></text><text class="journey-description">到期后，回到这里打开。最多保留 50 封，只在本机。</text>
+      <view wx:if="{{capsules.length}}" class="capsule-list"><view wx:for="{{capsules}}" wx:key="id" class="capsule-item"><view class="capsule-row {{item.ready ? 'capsule-ready' : ''}}"><button class="capsule-open" bindtap="openCapsule" data-id="{{item.id}}" aria-label="{{item.unlockDate}}，{{item.status}}"><view class="capsule-envelope">✉</view><view class="capsule-summary"><text class="capsule-date">{{item.unlockDate}}</text><text class="capsule-status">{{item.status}}</text><text class="capsule-created">封存于 {{item.createdDate}}</text></view><text class="capsule-arrow">{{item.ready ? '↗' : '·'}}</text></button><button class="capsule-remove" bindtap="deleteCapsule" data-id="{{item.id}}" disabled="{{reminderBusyId === item.id}}" aria-label="放下这封未来回响">×</button></view><view wx:if="{{remindersAvailable || item.reminderLabel}}" class="capsule-reminder"><text>{{item.reminderLabel}}</text><button wx:if="{{remindersAvailable && !item.ready && item.reminder !== 'pending' && item.reminder !== 'sent' && item.reminder !== 'uncertain'}}" class="reminder-retry" data-id="{{item.id}}" bindtap="requestCapsuleReminder" disabled="{{!!reminderBusyId}}">{{reminderBusyId === item.id ? '正在设置…' : '到期时在微信提醒我'}}</button></view></view></view>
+      <view wx:else class="capsule-empty"><text>给未来，留一声回响。</text><text class="gentle-caption">读到想留下的答案时，点「留给未来」。</text></view>
+      <text class="gentle-caption capsule-footnote">封存独立于普通历史保留。清理小程序数据或换设备后，信封也不会自动恢复。{{remindersAvailable ? '清理数据前，请先删除已订阅的信封以取消提醒。' : ''}}</text>
+    </view>
+    <view wx:if="{{sheet === 'capsule' && capsule}}" class="journey-content opened-capsule">
+      <button class="capsule-back" bindtap="backToCapsules">‹ 返回信封</button><text class="section-eyebrow">写给今天的你</text><text class="journey-title">约定的那天，<text class="color-text">到了。</text></text><text class="journey-description">{{capsule.createdDate}} 封存 · {{capsule.unlockDate}} 打开</text>
+      <view wx:if="{{capsule.message}}" class="future-message"><text class="section-eyebrow">那时，你留了一句话</text><text>{{capsule.message}}</text></view>
+      <text wx:if="{{capsule.question}}" class="detail-question">那时的疑问 · {{capsule.question}}</text><text class="detail-answer capsule-answer">{{capsule.text}}</text><text class="detail-reflection">{{capsule.reflection}}</text><text class="gentle-caption">今天再读，你有了怎样的感受？</text>
+    </view>
+  </scroll-view></view></view>
+  <view wx:if="{{sealOpen}}" class="seal-backdrop" style="bottom:{{keyboardHeight}}px" bindtap="closeSeal" catchtouchmove="stopPropagation"><view class="seal-panel" catchtap="stopPropagation"><view class="sheet-handle"></view><button class="sheet-close" bindtap="closeSeal" aria-label="关闭封存">×</button><scroll-view scroll-y class="seal-scroll" scroll-into-view="{{sealAnchor}}" style="max-height:{{keyboardHeight ? 'calc(100vh - ' + (keyboardHeight + 100) + 'px)' : '72vh'}}" show-scrollbar="{{false}}"><view class="journey-content">
+    <text class="section-eyebrow">写给未来的回响</text><text class="journey-title">让今天的话，<text class="color-text">陪你走远一点。</text></text><text class="seal-answer">{{sealOrigin}}</text>
+    <text class="field-label">约定哪一天打开</text><picker mode="date" value="{{sealDate}}" start="{{minSealDate}}" end="{{maxSealDate}}" bindchange="onSealDate"><view class="seal-date"><text>{{sealDate}}</text><text>选择日期 ↗</text></view></picker>
+    <text class="field-label">给那天的自己留句话 <text class="field-optional">选填</text></text><view id="future-message-editor"><textarea class="seal-message" value="{{sealDraft}}" bindinput="onSealMessage" bindkeyboardheightchange="onKeyboardHeight" fixed="{{true}}" adjust-position="{{false}}" show-confirm-bar="{{false}}" cursor-spacing="24" maxlength="300" placeholder="希望那时的你……" placeholder-class="input-placeholder"/><text class="note-counter">{{sealDraft.length}} / 300</text></view>
+    <view wx:if="{{remindersAvailable}}" class="seal-reminder"><view class="seal-reminder-heading"><text>到期时在微信提醒我</text><switch checked="{{sealRemind}}" bindchange="onSealRemind" color="#6b93d6" aria-label="到期微信提醒"/></view><text class="seal-reminder-caption">约定日上午 9 点提醒一次，需同意微信订阅。仅上传信封编号、日期和收件标识，不上传信件内容。</text></view>
+    <button class="primary-button" bindtap="saveCapsule">封存，等那天再打开</button><text class="gentle-caption seal-explanation">{{remindersAvailable ? '信件正文仅在本机保存。未订阅提醒，也可以到期回来打开。' : '到约定日期后，在「我的回响」中打开。不会主动发消息提醒，仅保存在本机。'}}</text>
+  </view></scroll-view></view></view>
+  <canvas type="2d" id="answer-image-canvas" class="answer-image-canvas"></canvas>
+  <view wx:if="{{shareCardOpen}}" class="image-share-backdrop" bindtap="closeShareCard" catchtouchmove="stopPropagation">
+    <view class="image-share-panel" catchtap="stopPropagation">
+      <view class="image-share-heading"><view><text class="image-share-title">把这句回响，送出去。</text><text class="image-share-description">包含问题、答案与解释，不含回信。</text></view><button class="image-share-close" bindtap="closeShareCard" disabled="{{shareSaving}}" aria-label="关闭图片预览">×</button></view>
+      <scroll-view class="image-share-scroll" scroll-y show-scrollbar="{{false}}">
+        <view wx:if="{{shareBusy}}" class="image-share-state"><image src="/assets/brand-mark.png"/><text>正在生成你的卡片…</text></view>
+        <view wx:elif="{{shareError}}" class="image-share-state"><text>卡片还没生成好</text><button bindtap="generateShareCard">再试一次</button></view>
+        <image wx:else class="image-share-preview" src="{{shareImagePath}}" mode="aspectFit" aria-label="查看卡片大图" bindtap="previewShareImage"/>
+      </scroll-view>
+      <view class="image-share-buttons"><button class="image-share-save" bindtap="saveShareImage" disabled="{{!shareImagePath || shareSaving}}">{{shareSaving ? '正在保存' : '保存到相册'}}</button><button wx:if="{{canShareImage}}" class="primary-button image-share-send" bindtap="sendShareImage" disabled="{{!shareImagePath || shareSaving}}">分享图片</button><button wx:else class="primary-button image-share-send" bindtap="previewShareImage" disabled="{{!shareImagePath}}">查看大图</button></view>
+      <text class="image-share-tip">{{canShareImage ? '分享的是图片，不附带小程序入口。' : '保存后，可以从相册发送这张图片。'}}</text>
+    </view>
+  </view>
+<view wx:if="{{notice}}" class="notice {{noticeClosing ? 'notice-closing' : ''}} notice-{{noticeTone}}" style="top:{{topInset + navHeight + 12}}px"><text class="notice-symbol">{{noticeTone === 'error' ? '!' : '✓'}}</text><text>{{notice}}</text></view>
+  <template wx:if="{{reminderFlight}}" is="letter-flight"/>
+</view>
+

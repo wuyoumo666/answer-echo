@@ -1,0 +1,4 @@
+{
+  "permissions": {"openapi": ["subscribeMessage.send"]},
+  "triggers": [{"name":"echoReminderDue","type":"timer","config":"0 */5 * * * * *"}]
+}
